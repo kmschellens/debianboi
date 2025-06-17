@@ -1,0 +1,125 @@
+version: "3.8"
+services:
+
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - TZ=Europe/Amsterdam
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - "107"  # Replace with your actual render GID from `getent group render`
+    volumes:
+      - /home/koen/jellyfin/config:/config
+      - /home/koen/jellyfin/cache:/cache
+      - /srv/JellyMedia:/media
+    ports:
+      - 8096:8096
+    restart: unless-stopped
+
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr
+    container_name: jellyseerr
+    environment:
+      - TZ=Europe/Amsterdam
+    ports:
+      - 5055:5055
+    volumes:
+      - /home/koen/jellyseer/config:/app/config
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000  # Adjust this to match your user ID
+      - PGID=1000  # Adjust this to match your group ID
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /home/koen/sonarr/config:/config
+      - /srv/JellyMedia/tv:/tv        # Path to your TV shows
+      - /home/koen/media/downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000  # Adjust as needed
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /home/koen/radarr/config:/config
+      - /srv/JellyMedia/film:/movies  # Path to your movies
+      - /home/koen/media/downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000     # Match your user ID
+      - PGID=1000     # Match your group ID
+      - TZ=Europe/Amsterdam
+      - WEBUI_PORT=8080
+    volumes:
+      - /home/koen/qbittorrent/config:/config
+      - /home/koen/media/downloads:/downloads
+    ports:
+      - 8080:8080       # Web UI
+      - 6881:6881       # BitTorrent TCP
+      - 6881:6881/udp   # BitTorrent UDP
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /home/koen/prowlarr/config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /home/koen/bazarr/config:/config
+      - /srv/JellyMedia/tv:/tv
+      - /srv/JellyMedia/film:/movies
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    user: "1000:1000"
+    environment:
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /srv:/srv
+      - /home/koen/filebrowser:/config
+    command: [
+      "--config", "/config/.filebrowser.json",
+      "--database", "/config/filebrowser.db",
+      "--address", "0.0.0.0"
+    ]
+    ports:
+      - 8085:8080
+    restart: unless-stopped
+

@@ -1,0 +1,30 @@
+---
+- name: Copy over docker compose
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure 'render' group exists
+      group:
+        name: render
+        state: present
+        system: yes
+
+    - name: Ensure 'koen' user is in 'render' group
+      user:
+        name: koen
+        groups: render
+        append: yes
+
+    - name: Deploy docker compose file
+      copy:
+        src: ../docker/jellyseer/compose.yaml
+        dest: /home/koen/jellyseer/compose.yaml
+        owner: koen
+        group: koen
+        mode: '0644'
+
+    - name: Docker Compose Up
+      ansible.builtin.shell:
+        cmd: cd /home/koen/jellyseer && docker compose up -d
+      become: true
+      become_user: koen

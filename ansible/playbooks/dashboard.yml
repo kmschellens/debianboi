@@ -1,0 +1,119 @@
+---
+- name: Install system metrics dashboard (Prometheus + Node Exporter + Grafana)
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Install dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - software-properties-common
+          - wget
+        state: present
+        update_cache: true
+
+    - name: Add Grafana APT key
+      apt_key:
+        url: https://packages.grafana.com/gpg.key
+        state: present
+
+    - name: Add Grafana APT repository
+      apt_repository:
+        repo: deb https://packages.grafana.com/oss/deb stable main
+        state: present
+        filename: grafana
+
+    - name: Install Grafana
+      apt:
+        name: grafana
+        state: present
+        update_cache: true
+
+    - name: Enable and start Grafana
+      systemd:
+        name: grafana-server
+        enabled: true
+        state: started
+
+    - name: Download Prometheus
+      get_url:
+        url: https://github.com/prometheus/prometheus/releases/download/v2.48.1/prometheus-2.48.1.linux-amd64.tar.gz
+        dest: /tmp/prometheus.tar.gz
+
+    - name: Extract Prometheus
+      unarchive:
+        src: /tmp/prometheus.tar.gz
+        dest: /opt/
+        remote_src: yes
+        extra_opts: [--strip-components=1]
+
+    - name: Copy Prometheus configuration
+      copy:
+        dest: /opt/prometheus.yml
+        content: |
+          global:
+            scrape_interval: 15s
+
+          scrape_configs:
+            - job_name: 'node_exporter'
+              static_configs:
+                - targets: ['localhost:9100']
+
+    - name: Create Prometheus systemd service
+      copy:
+        dest: /etc/systemd/system/prometheus.service
+        content: |
+          [Unit]
+          Description=Prometheus
+          Wants=network-online.target
+          After=network-online.target
+
+          [Service]
+          ExecStart=/opt/prometheus \
+            --config.file=/opt/prometheus.yml \
+            --storage.tsdb.path=/opt/data
+
+          [Install]
+          WantedBy=default.target
+
+    - name: Reload systemd and start Prometheus
+      systemd:
+        daemon_reload: true
+        name: prometheus
+        enabled: true
+        state: started
+
+    - name: Download Node Exporter
+      get_url:
+        url: https://github.com/prometheus/node_exporter/releases/download/v1.8.1/node_exporter-1.8.1.linux-amd64.tar.gz
+        dest: /tmp/node_exporter.tar.gz
+
+    - name: Extract Node Exporter
+      unarchive:
+        src: /tmp/node_exporter.tar.gz
+        dest: /opt/
+        remote_src: yes
+        extra_opts: [--strip-components=1]
+
+    - name: Create Node Exporter systemd service
+      copy:
+        dest: /etc/systemd/system/node_exporter.service
+        content: |
+          [Unit]
+          Description=Node Exporter
+          Wants=network-online.target
+          After=network-online.target
+
+          [Service]
+          ExecStart=/opt/node_exporter
+
+          [Install]
+          WantedBy=default.target
+
+    - name: Reload systemd and start Node Exporter
+      systemd:
+        daemon_reload: true
+        name: node_exporter
+        enabled: true
+        state: started

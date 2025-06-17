@@ -1,0 +1,26 @@
+---
+- name: Set up NGINX web server with custom index.html
+  hosts: all
+  become: true
+  tasks:
+
+    # - name: Install NGINX
+    #   apt:
+    #     name: nginx
+    #     state: present
+    #     update_cache: yes
+
+    # - name: Ensure NGINX is running and enabled
+    #   service:
+    #     name: nginx
+    #     state: started
+    #     enabled: yes
+
+    - name: Deploy html dir
+      copy:
+        src: ../html/
+        dest: /var/www/html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welkom bij TV kijken!</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <style>
+      /* ------- Reset & Globals ------- */
+      :root {
+        --brand: #007acc;
+        --bg: #f0f2f5;
+        --card-bg: #ffffff;
+        --text: #333333;
+        --radius: 0.75rem;
+        --shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        padding: 2rem 1rem;
+        max-width: 900px;
+        margin-inline: auto;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 0 0 1.5rem 0;
+        font-size: clamp(1.8rem, 4vw, 2.4rem);
+        color: #ffffff;
+      }
+
+      p {
+        text-align: center;
+        margin-block: 0 2rem;
+        font-size: 1.05rem;
+      }
+
+      /* ------- Sections ------- */
+      .section {
+        margin-top: 2rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+        color: var(--brand);
+        border-bottom: 2px solid var(--brand);
+        padding-bottom: 0.35rem;
+      }
+
+      /* ------- Services ------- */
+      .services-grid {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .service {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        background: var(--card-bg);
+        padding: 0.9rem 1rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .service:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      .service i {
+        font-size: 1.4rem;
+        color: var(--brand);
+        flex-shrink: 0;
+        width: 1.6rem;
+        text-align: center;
+      }
+
+      .service a {
+        flex: 1;
+        text-decoration: none;
+        color: var(--brand);
+        font-size: 1.05rem;
+        font-weight: 500;
+        word-break: break-word;
+      }
+
+      .highlight {
+        background: #e6f4ff;
+      }
+
+      /* ------- Responsive tweaks ------- */
+      @media (min-width: 576px) {
+        .services-grid {
+          grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1e1f22;
+          --card-bg: #2a2b2f;
+          --text: #e5e5e5;
+          --shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .section-title,
+        .service a,
+        .service i {
+          color: #60a8ff;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welkom bij TV kijken!</h1>
+
+    <p>Als je kijkt met Koen, ja hij wil wel een biertje 🍺</p>
+
+    <!-- 🎬 Leuke dingen -->
+    <section class="section">
+      <div class="section-title">🎬 Leuke dingen:</div>
+      <div class="services-grid">
+        <div class="service highlight">
+          <i class="fas fa-tv"></i>
+          <a id="jellyfin-link" href="#">tvkijken (Jellyfin)</a>
+        </div>
+        <div class="service highlight">
+          <i class="fas fa-list-alt"></i>
+          <a href="//:5055" target="_blank" rel="noopener noreferrer"
+            >Verzoekjes indienen (Jellyseerr)</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- 🛠️ Andere meuk (voor Koen) -->
+    <section class="section">
+      <div class="section-title">🛠️ Andere meuk (voor Koen)</div>
+      <div class="services-grid">
+        <div class="service">
+          <i class="fas fa-sitemap"></i>
+          <a href="//:8989" target="_blank" rel="noopener noreferrer"
+            >Sonarr (series)</a
+          >
+        </div>
+        <div class="service">
+          <i class="fas fa-film"></i>
+          <a href="//:7878" target="_blank" rel="noopener noreferrer"
+            >Radarr (films)</a
+          >
+        </div>
+        <div class="service">
+          <i class="fas fa-bolt"></i>
+          <a href="//:9696" target="_blank" rel="noopener noreferrer"
+            >Prowlarr</a
+          >
+        </div>
+        <div class="service">
+          <i class="fas fa-bolt"></i>
+          <a href="//:6767" target="_blank" rel="noopener noreferrer"
+            >Bazarr</a
+          >
+        </div>
+        <div class="service">
+          <i class="fas fa-download"></i>
+          <a href="//:8080" target="_blank" rel="noopener noreferrer"
+            >qBittorrent</a
+          >
+        </div>
+        <div class="service">
+          <i class="fas fa-chart-line"></i>
+          <a href="//:8085" target="_blank" rel="noopener noreferrer"
+            >Dashboard (Filebrowser)</a
+          >
+        </div>
+      </div>
+    </section>
+<script>
+  // Dynamisch hostname invoegen in alle links met poort
+  const links = document.querySelectorAll('a[href^="//:"]');
+  links.forEach((link) => {
+    const port = link.getAttribute("href").split(":")[1];
+    link.href = `${window.location.protocol}//${window.location.hostname}:${port}`;
+  });
+
+  // Try opening Swiftfin via App Store on mobile, otherwise open Jellyfin web
+  const jellyfinLink = document.getElementById("jellyfin-link");
+  if (jellyfinLink) {
+    jellyfinLink.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const appStoreUrl = "https://apps.apple.com/nl/app/swiftfin/id1604098728?l=en-GB";
+      const webUrl = `${window.location.protocol}//${window.location.hostname}:8096`;
+
+      // Basic mobile device detection
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        const now = Date.now();
+        window.location.href = appStoreUrl;
+
+        // Fallback to Jellyfin web if App Store doesn't open quickly
+        setTimeout(() => {
+          if (Date.now() - now < 2000) {
+            window.location.href = webUrl;
+          }
+        }, 1200);
+      } else {
+        window.location.href = webUrl;
+      }
+    });
+  }
+</script>
+
+
+  </body>
+</html>
