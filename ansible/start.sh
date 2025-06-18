@@ -1,5 +1,5 @@
-# ansible-playbook -i ~/ansible/hosts ~/ansible/playbooks/docker-install.yml
-# ansible-playbook -i ~/ansible/hosts ~/ansible/playbooks/dashboard.yml
+ansible-playbook -i hosts playbooks/docker-install.yml
+ansible-playbook -i hosts playbooks/dashboard.yml
 
-# ansible-playbook -i ~/ansible/hosts ~/ansible/playbooks/webserver.yml
-ansible-playbook -i ~/ansible/hosts ~/ansible/playbooks/docker.yml
+ansible-playbook -i hosts playbooks/webserver.yml
+ansible-playbook -i hosts playbooks/docker.yml
