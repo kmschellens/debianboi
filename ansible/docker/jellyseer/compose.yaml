@@ -99,8 +99,7 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - /home/koen/bazarr/config:/config
-      - /srv/JellyMedia/tv:/tv
-      - /srv/JellyMedia/film:/movies
+      - /srv/JellyMedia:/media
     ports:
       - 6767:6767
     restart: unless-stopped
