@@ -1,5 +1,5 @@
 ---
-- name: Copy over docker compose
+- name: Copy over docker composes
   hosts: all
   become: true
   tasks:
@@ -15,10 +15,26 @@
         groups: render
         append: yes
 
-    - name: Deploy docker compose file
+    - name: Copy over *arr stack compose file
       copy:
         src: ../docker/jellyseer/compose.yaml
         dest: /home/koen/jellyseer/compose.yaml
+        owner: koen
+        group: koen
+        mode: '0644'
+
+    - name: Ensure /home/koen/authentik folder exists
+      ansible.builtin.file:
+        path: /home/koen/authentik
+        state: directory
+        owner: koen
+        group: koen
+        mode: '0755'
+
+    - name: Copy over Authentik compose file
+      copy:
+        src: ../docker/authentik/compose.yaml
+        dest: /home/koen/authentik/compose.yaml
         owner: koen
         group: koen
         mode: '0644'
