@@ -39,8 +39,14 @@
         group: koen
         mode: '0644'
 
-    - name: Docker Compose Up
+    - name: Docker Compose Up Jellyseer
       ansible.builtin.shell:
         cmd: cd /home/koen/jellyseer && docker compose up -d
+      become: true
+      become_user: koen
+
+    - name: Docker Compose Up Authentik
+      ansible.builtin.shell:
+        cmd: cd /home/koen/authentik && docker compose up -d
       become: true
       become_user: koen
