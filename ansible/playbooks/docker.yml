@@ -47,6 +47,22 @@
         group: koen
         mode: '0644'
 
+    - name: Ensure /home/koen/authentik-forward-proxy folder exists
+      ansible.builtin.file:
+        path: /home/koen/authentik-forward-proxy
+        state: directory
+        owner: koen
+        group: koen
+        mode: '0755'
+
+    - name: Copy over Authentik-forward-proxy compose file
+      copy:
+        src: ../docker/authentik-forward-proxy/compose.yaml
+        dest: /home/koen/authentik-forward-proxy/compose.yaml
+        owner: koen
+        group: koen
+        mode: '0644'
+
     - name: Docker Compose Up Arr-stack
       ansible.builtin.shell:
         cmd: cd /home/koen/arr-stack && docker compose up -d
@@ -56,5 +72,11 @@
     - name: Docker Compose Up Authentik
       ansible.builtin.shell:
         cmd: cd /home/koen/authentik && docker compose up -d
+      become: true
+      become_user: koen
+
+    - name: Docker Compose Up Authentik-forward-proxy
+      ansible.builtin.shell:
+        cmd: cd /home/koen/authentik-forward-proxy && docker compose up -d
       become: true
       become_user: koen
