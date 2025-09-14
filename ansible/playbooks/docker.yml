@@ -15,10 +15,18 @@
         groups: render
         append: yes
 
+    - name: Ensure /home/koen/arr-stack folder exists
+      ansible.builtin.file:
+        path: /home/koen/arr-stack
+        state: directory
+        owner: koen
+        group: koen
+        mode: '0755'
+
     - name: Copy over *arr stack compose file
       copy:
-        src: ../docker/jellyseer/compose.yaml
-        dest: /home/koen/jellyseer/compose.yaml
+        src: ../docker/arr-stack/compose.yaml
+        dest: /home/koen/arr-stack/compose.yaml
         owner: koen
         group: koen
         mode: '0644'
@@ -39,9 +47,9 @@
         group: koen
         mode: '0644'
 
-    - name: Docker Compose Up Jellyseer
+    - name: Docker Compose Up Arr-stack
       ansible.builtin.shell:
-        cmd: cd /home/koen/jellyseer && docker compose up -d
+        cmd: cd /home/koen/arr-stack && docker compose up -d
       become: true
       become_user: koen
 

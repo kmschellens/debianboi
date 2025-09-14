@@ -9,7 +9,8 @@ services:
     devices:
       - /dev/dri:/dev/dri
     group_add:
-      - "107"  # Replace with your actual render GID from `getent group render`
+      - "105"  # Replace with your actual render GID from `getent group render`
+      - "video"
     volumes:
       - /home/koen/jellyfin/config:/config
       - /home/koen/jellyfin/cache:/cache
