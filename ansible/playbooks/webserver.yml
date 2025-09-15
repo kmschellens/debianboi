@@ -18,9 +18,29 @@
 
     - name: Deploy html dir
       copy:
-        src: ../html/
+        src: ../nginx/html/
         dest: /var/www/html
         owner: www-data
         group: www-data
         mode: '0644'
 
+    - name: Deploy sites-available
+      copy:
+        src: ../nginx/etc/nginx/sites-available/
+        dest: /etc/nginx/sites-available/
+        owner: root
+        group: root
+        mode: '0644'
+        follow: no
+
+    - name: Validate NGINX config
+      ansible.builtin.shell:
+        cmd: sudo nginx -t
+      become: true
+      become_user: koen
+
+    - name: Reload NGINX
+      ansible.builtin.shell:
+        cmd: cd /etc/nginx/sites-enabled/ && sudo systemctl reload nginx
+      become: true
+      become_user: koen
