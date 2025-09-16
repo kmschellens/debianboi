@@ -105,6 +105,14 @@ services:
       - 6767:6767
     restart: unless-stopped
 
+
+  subsyncarr:
+    image: mrorbitman/subsyncarr:latest
+    container_name: subsyncarr
+    volumes:
+      - /srv/JellyMedia:/scan_dir
+    restart: unless-stopped
+
   filebrowser:
     image: filebrowser/filebrowser:latest
     container_name: filebrowser
